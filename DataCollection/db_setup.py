@@ -11,7 +11,7 @@ cursor.execute('''
 CREATE TABLE Book (
     ID          INTEGER         PRIMARY KEY ASC AUTOINCREMENT,
     Title       VARCHAR (100)   NOT NULL,
-    Value       VARCHAR (30),
+    Value       INTEGER,
     Author      VARCHAR (50),
     Description VARCHAR(100),
     Type        VARCHAR (100),
