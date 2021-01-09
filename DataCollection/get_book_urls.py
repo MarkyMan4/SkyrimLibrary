@@ -35,7 +35,7 @@ for tr in rows[1:]: # skip over first entry which is an empty list
 
 # save the data to a csv
 # using pipe as a delimiter since some fields have commas
-with open('DataCollection/books.csv', 'w') as f:
+with open('books.csv', 'w') as f:
     f.write('Title|Value|Author|Description|Type|URL\n')
     for book in books:
         for i, data in enumerate(book):

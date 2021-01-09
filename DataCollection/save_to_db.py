@@ -5,10 +5,10 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import sqlite3
 
-conn = sqlite3.connect('SkyrimLibrary.db')
+conn = sqlite3.connect('../SkyrimLibrary.db')
 cursor = conn.cursor()
 
-df = pd.read_csv('DataCollection/books.csv', delimiter='|')
+df = pd.read_csv('books.csv', delimiter='|')
 
 df = df.where(pd.notnull(df), '') # replace nan with empty string
 
@@ -24,7 +24,19 @@ for i in range(len(df)):
         # Some books start with a fancy letter that is actually an image.
         # Need to find a way to get that letter as well so the first letter of the
         # book isn't cut off.
-        book_content = soup.find('div', {'class': 'book'}).text
+        book_content = soup.find('div', {'class': 'book'})
+
+        # get the book text
+        # replace newline characters with spaces so each book is a continuous line of text
+        # strip off leading and trailing whitespace
+        book_text = book_content.text.replace('\n', ' ').strip()
+
+        # sometimes the first letter of the book is a fancy letter that is an image
+        # the actual letter is stored in the alt text
+        fancy_letter = book_content.find('img')
+
+        if(fancy_letter):
+            book_text = fancy_letter['alt'] + book_text
 
         cursor.execute("""
             INSERT INTO Book(Title, Value, Author, Description, Type, Content)
@@ -36,7 +48,7 @@ for i in range(len(df)):
                 df.iloc[i]['Author'],
                 df.iloc[i]['Description'],
                 df.iloc[i]['Type'],
-                book_content
+                book_text
             ]
         )
 

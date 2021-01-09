@@ -3,7 +3,7 @@
 
 import sqlite3
 
-conn = sqlite3.connect('SkyrimLibrary.db')
+conn = sqlite3.connect('../SkyrimLibrary.db')
 cursor = conn.cursor()
 
 # Create the Book table
